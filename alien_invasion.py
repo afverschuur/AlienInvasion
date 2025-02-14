@@ -9,6 +9,7 @@ from alien import Alien
 from gamestats import GameStats
 from button import Button
 from scoreboard import Scoreboard
+from highscore import Highscore
 
 class AlienInvasion:
     """ Class to manage game assets and behavior """
@@ -25,6 +26,8 @@ class AlienInvasion:
         self.game_sound_music = pygame.mixer.Sound(self.settings.game_sound_music)
         self.game_sound_levelup = pygame.mixer.Sound(self.settings.game_sound_levelup)
         self.game_sound_start = pygame.mixer.Sound(self.settings.game_sound_start)
+        self.game_sound_mweh = pygame.mixer.Sound(self.settings.game_sound_mweh)
+        self.game_sound_playmusic = pygame.mixer.Sound(self.settings.game_sound_playmusic)
 
         pygame.mixer.Sound.play(self.game_sound_music, -1)
 
@@ -33,6 +36,7 @@ class AlienInvasion:
 
         self.stats = GameStats(self)
         self.sb = Scoreboard(self)
+        self.highscore = Highscore(self)
 
         self.ship = Ship(self)
         self.bullets = pygame.sprite.Group()
@@ -43,6 +47,7 @@ class AlienInvasion:
         self.play_button = Button(self, "Play")
         self.just_started = False
         self.countdown = False
+        self.onlyonce = True
 
     def run_game(self):
         """ Start the main loop for the game """
@@ -109,6 +114,9 @@ class AlienInvasion:
             self.aliens.empty()
             self.bullets.empty()
             self._create_fleet()
+            for alien in self.aliens:
+                alien.start_moving()
+            self.ship.new_ship()
             self.ship.center_ship()
             pygame.mouse.set_visible(False)
             self.just_started = True
@@ -164,17 +172,24 @@ class AlienInvasion:
     def _ship_hit(self):
         """ Handle hitting ship """
         self.ship.explode()
-        if self.stats.ships_left > 0:
+        self.onlyonce = True
+        for alien in self.aliens:
+            alien.pause_moving()
+        pygame.mixer.Sound.play(self.game_sound_mweh)
+        if self.stats.ships_left > 1:
             self.stats.ships_left -= 1
             self.sb.prep_ships()
             self.aliens.empty()
             self.bullets.empty()
             self._create_fleet()
-            self.ship.center_ship()
-            sleep(2)
         else:
             self.stats.game_active = False
+            self.stats.game_over = True
+            pygame.mixer.Sound.stop(self.game_sound_playmusic)
             pygame.mixer.Sound.play(self.game_sound_gameover)
+            #sleep(4)
+            pygame.mixer.Sound.play(self.game_sound_music)
+
             pygame.mouse.set_visible(True)
 
     def _check_aliens_landed(self):
@@ -224,24 +239,39 @@ class AlienInvasion:
             sleep(2)
     
     def _update_screen(self):
-        """ Redraw screen and flip to nwe screen """
+        """ Redraw screen and flip to new screen """
         if self.countdown == True:
+            pygame.mixer.Sound.stop(self.game_sound_music)
             pygame.mixer.Sound.play(self.game_sound_start)
             sleep(3)
+            pygame.mixer.Sound.play(self.game_sound_playmusic, -1)
             self.countdown = False
+
         if self.stats.game_active and self.just_started:
             self.countdown = True
             self.just_started = False
+
         # Redraw screen 
         self.screen.fill(self.settings.bg_color)
+
         self.ship.blitme()
-        for bullet in self.bullets.sprites():
-            bullet.draw_bullet()
-        self.aliens.draw(self.screen)
+
+        if self.stats.game_active:
+            for bullet in self.bullets.sprites():
+                bullet.draw_bullet()
+            self.aliens.draw(self.screen)
         self.sb.draw_score()
 
         if not self.stats.game_active:
             self.play_button.draw_button()
+            self.highscore.draw_highscore()
+
+        if not self.ship.exploding:
+            if self.onlyonce:
+                for alien in self.aliens:
+                    alien.start_moving()
+                self.onlyonce = False
+
         # Make the last drawn screen visible
         pygame.display.flip()
 

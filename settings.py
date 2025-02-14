@@ -8,7 +8,7 @@ class Settings:
         self.bg_color = (230,230,230)
 
         # Ship settings
-        self.ship_limit = 3
+        self.ship_limit = 2
         self.ship_sound_fire = "sounds/laser.mp3"
 
         # Bullet settings
@@ -18,7 +18,7 @@ class Settings:
         self.bullets_allowed = 3
 
         # Alien settings
-        self.fleet_drop_speed = 10
+        self.fleet_drop_speed = 50
         self.alien_sound_explosion = "sounds/explosion.mp3"
 
         # Game
@@ -28,6 +28,8 @@ class Settings:
         self.game_sound_music = "sounds/music1.mp3"
         self.game_sound_levelup = "sounds/levelup2.mp3"
         self.game_sound_start = "sounds/countdown.mp3"
+        self.game_sound_mweh = "sounds/mweh.mp3"
+        self.game_sound_playmusic = "sounds/playmusic.mp3"
 
         self.init_dynamic_settings()
 
