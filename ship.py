@@ -44,3 +44,7 @@ class Ship(Sprite):
         self.rect.midbottom = self.screen_rect.midbottom
         self.x = float(self.rect.x)
 
+    def explode(self):
+        self.image = pygame.image.load('images/ship_exploded.png').convert()
+        self.rect = self.image.get_rect()
+
