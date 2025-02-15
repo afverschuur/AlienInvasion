@@ -15,7 +15,8 @@ class Scoreboard:
 
         # Font settings
         self.text_color = (30, 30, 30)
-        self.font = pygame.font.SysFont(None, 48)
+        self.font = pygame.font.Font(self.settings.font, 32)
+        self.topmargin = 10
 
         self.prep_score()
         self.prep_level()
@@ -30,7 +31,7 @@ class Scoreboard:
         # Display score at top right
         self.score_rect = self.score_img.get_rect()
         self.score_rect.center = self.screen_rect.center
-        self.score_rect.top = 20
+        self.score_rect.top = self.topmargin
 
     def prep_level(self):
         """ Turn level in rendered image """
@@ -40,15 +41,15 @@ class Scoreboard:
         # Display level below score
         self.level_rect = self.level_img.get_rect()
         self.level_rect.right = self.screen_rect.right - 20
-        self.level_rect.top = 20
+        self.level_rect.top = self.topmargin
 
     def prep_ships(self):
         """ Show how many ships left """
         self.ships = Group()
-        for ship_nr in range(self.stats.ships_left):
+        for ship_nr in range(self.stats.ships_left-1):
             ship = Ship(self.ai_game)
             ship.rect.x = 10 + ship_nr * ship.rect.width
-            ship.rect.y = 10
+            ship.rect.y = self.topmargin
             self.ships.add(ship)
 
     def draw_score(self):

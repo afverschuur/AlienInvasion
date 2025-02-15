@@ -4,11 +4,13 @@ class Settings:
     def __init__(self):
         # Screen settings
         self.screen_width = 1150
-        self.screen_height = 600
+        self.screen_height = 800
         self.bg_color = (230,230,230)
+        self.init_pos = self.screen_height / 6
+        self.start_pos = self.init_pos
 
         # Ship settings
-        self.ship_limit = 2
+        self.ship_limit = 1
         self.ship_sound_fire = "sounds/laser.mp3"
 
         # Bullet settings
@@ -30,6 +32,9 @@ class Settings:
         self.game_sound_start = "sounds/countdown.mp3"
         self.game_sound_mweh = "sounds/mweh.mp3"
         self.game_sound_playmusic = "sounds/playmusic.mp3"
+
+        self.font = "font/SpaceMono-Regular.ttf"
+        self.font_gametitle = "font/Monofett-Regular.ttf"
 
         self.init_dynamic_settings()
 

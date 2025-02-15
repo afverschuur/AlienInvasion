@@ -7,7 +7,6 @@ from ship import Ship
 from bullet import Bullet
 from alien import Alien
 from gamestats import GameStats
-from button import Button
 from scoreboard import Scoreboard
 from highscore import Highscore
 
@@ -44,7 +43,6 @@ class AlienInvasion:
 
         self._create_fleet()
 
-        self.play_button = Button(self, "Play")
         self.just_started = False
         self.countdown = False
         self.onlyonce = True
@@ -53,6 +51,17 @@ class AlienInvasion:
         """ Start the main loop for the game """
         clock = pygame.time.Clock()
         while True:
+            if self.countdown == True:
+                pygame.mixer.Sound.stop(self.game_sound_music)
+                pygame.mixer.Sound.play(self.game_sound_start)
+                sleep(3)
+                pygame.mixer.Sound.play(self.game_sound_playmusic, -1)
+                self.countdown = False
+
+            if self.stats.game_active and self.just_started:
+                self.countdown = True
+                self.just_started = False
+
             self._check_events()
 
             if self.stats.game_active:
@@ -73,9 +82,6 @@ class AlienInvasion:
                 self._check_keydown_events(event)
             elif event.type == pygame.KEYUP:
                 self._check_keyup_events(event)
-            elif event.type == pygame.MOUSEBUTTONDOWN:
-                mouse_pos = pygame.mouse.get_pos()
-                self._check_play_button(mouse_pos)
     
     def _check_keydown_events(self, event):
         if event.key == pygame.K_RIGHT:
@@ -95,11 +101,6 @@ class AlienInvasion:
             self.ship.moving_right = False
         if event.key == pygame.K_LEFT:
             self.ship.moving_left = False
-    
-    def _check_play_button(self, mouse_pos):
-        """ Start game when player clicks Play """
-        if self.play_button.rect.collidepoint(mouse_pos) and not self.stats.game_active:
-            self._start_game()
 
     def _start_game(self):
             self.stats.game_active = True
@@ -185,11 +186,12 @@ class AlienInvasion:
         else:
             self.stats.game_active = False
             self.stats.game_over = True
+            self.stats.check_highscore()
+            self.highscore.update()
             pygame.mixer.Sound.stop(self.game_sound_playmusic)
             pygame.mixer.Sound.play(self.game_sound_gameover)
             #sleep(4)
             pygame.mixer.Sound.play(self.game_sound_music)
-
             pygame.mouse.set_visible(True)
 
     def _check_aliens_landed(self):
@@ -240,16 +242,6 @@ class AlienInvasion:
     
     def _update_screen(self):
         """ Redraw screen and flip to new screen """
-        if self.countdown == True:
-            pygame.mixer.Sound.stop(self.game_sound_music)
-            pygame.mixer.Sound.play(self.game_sound_start)
-            sleep(3)
-            pygame.mixer.Sound.play(self.game_sound_playmusic, -1)
-            self.countdown = False
-
-        if self.stats.game_active and self.just_started:
-            self.countdown = True
-            self.just_started = False
 
         # Redraw screen 
         self.screen.fill(self.settings.bg_color)
@@ -260,10 +252,9 @@ class AlienInvasion:
             for bullet in self.bullets.sprites():
                 bullet.draw_bullet()
             self.aliens.draw(self.screen)
-        self.sb.draw_score()
+            self.sb.draw_score()
 
         if not self.stats.game_active:
-            self.play_button.draw_button()
             self.highscore.draw_highscore()
 
         if not self.ship.exploding:
