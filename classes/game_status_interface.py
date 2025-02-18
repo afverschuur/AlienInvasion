@@ -1,22 +1,22 @@
 # Informal Interface
 #
-# Alien Invasion has a infinite main while loop in which:
+# Alien Invasion has a infinite Main While Loop in which:
 # 1 Inputs are handled (e.g. keyboard)
 # 2 Assets are updated (e.g. ships move, aliens move etc..)
 # 3 Screen is updated: redraw assets en flip screen (see pygame docs)
 # 
-# Every part of the game is defined as an Game Status: 
+# Every part of the game is defined as an Game Loop: 
 # 1 Start screen before playing
 # 2 Playing the game
 # 3 Game over
 # 4 New Highscore: enter your name for Hall of Fame
 #
-# To implement a Game Status use this interface.
+# To implement a Game Loop use this interface.
 #
-# Constructor: Feed the game base-class to give a Game Status access to the sceen, settings and stats 
+# Constructor: Feed the game base-class to give a Game Loop access to the sceen, settings and stats 
 
-class GameStatusInterface:
-    """ Informal interface for implementing a Game Status"""
+class GameLoopInterface:
+    """ Informal interface for implementing a Game Loop"""
 
     def __init__(self, game_base) -> None:
         # For access to screen, settings and stats

@@ -1,6 +1,6 @@
 import pygame
 
-from classes.game_status_interface import GameStatusInterface
+from classes.game_status_interface import GameLoopInterface
 
 from game_assets.ship import Ship
 from game_assets.bullet import Bullet
@@ -8,7 +8,7 @@ from game_assets.alien import Alien
 
 from .scoreboard import Scoreboard
 
-class PlayGame(GameStatusInterface):
+class PlayGame(GameLoopInterface):
 
     ######################################
     # INIT
@@ -229,7 +229,7 @@ class PlayGame(GameStatusInterface):
             #self.game_base.highscore.update()
 
             #Change Status to StartScreen
-            self.game_base.change_status_to(self.game_base.game_over)
+            self.game_base.switch_loop_to(self.game_base.game_over)
 
     ######################################
     # UPDATE SCREEN

@@ -1,9 +1,9 @@
-from classes.game_status_interface import GameStatusInterface
+from classes.game_status_interface import GameLoopInterface
 from game_over.game_over_text import GameOverText
 import pygame
 from game_assets.ship import Ship 
 
-class GameOver(GameStatusInterface):
+class GameOver(GameLoopInterface):
     """ Class implementing start screen status """
 
     ######################################
@@ -24,7 +24,7 @@ class GameOver(GameStatusInterface):
         if event.type == pygame.KEYDOWN: 
             # Key 's' to start the game 
             if event.key == pygame.K_s:
-                self.game_base.change_status_to(self.game_base.play_game)
+                self.game_base.switch_loop_to(self.game_base.play_game)
                     
 
     ######################################

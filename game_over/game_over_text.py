@@ -22,6 +22,10 @@ class GameOverText(TextScreenCenter):
     def update(self):
         self.images.clear()
 
+        # GAME OVER!
+        super().render_text("GAME OVER!", self.font_big, self.text_color)
+        super().add_whitespace(20)
+
         # Title of game
         super().render_text(self.settings.title, self.font_title, self.text_color_title)
         self.add_whitespace(20)
