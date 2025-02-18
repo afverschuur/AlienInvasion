@@ -1,4 +1,4 @@
-from classes.game_status_interface import GameLoopInterface
+from classes.game_loop_interface import GameLoopInterface
 from start_screen.start_screen_text import StartScreenText
 import pygame
 from game_assets.ship import Ship 

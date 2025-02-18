@@ -1,6 +1,6 @@
 import pygame
 
-from classes.game_status_interface import GameLoopInterface
+from classes.game_loop_interface import GameLoopInterface
 
 from game_assets.ship import Ship
 from game_assets.bullet import Bullet
@@ -224,12 +224,12 @@ class PlayGame(GameLoopInterface):
             # Play sound
             self.game_base.soundfx.sound('gameover', pausemusic=True, wait=True)
 
-            # If new highscore
-            self.game_base.stats.check_highscore()
-            #self.game_base.highscore.update()
-
-            #Change Status to StartScreen
-            self.game_base.switch_loop_to(self.game_base.game_over)
+            # If new highscore, switch to New Highscore loop
+            if self.game_base.stats.is_highscore():
+                self.game_base.switch_loop_to(self.game_base.new_highscore)
+            # Else, switch Loop to Game Over loop
+            else:
+                self.game_base.switch_loop_to(self.game_base.game_over)
 
     ######################################
     # UPDATE SCREEN

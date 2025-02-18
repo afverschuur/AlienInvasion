@@ -9,6 +9,7 @@ from gamestats import GameStats
 from start_screen.start_screen import StartScreen
 from play_game.play_game import PlayGame
 from game_over.game_over import GameOver
+from new_highscore.new_highscore import NewHighscore
 
 # Alien Invasion
 #
@@ -64,6 +65,7 @@ class AlienInvasion:
         self.start_screen = StartScreen(self)
         self.play_game = PlayGame(self)
         self.game_over = GameOver(self)
+        self.new_highscore = NewHighscore(self)
 
         # Set initial Game loop
         self.switch_loop_to(self.start_screen)
@@ -77,6 +79,7 @@ class AlienInvasion:
         while True:
 
             # Respond to inputs in current loop
+            # pygame.event.get() in main loop: it clears events, so otherwise no responses in second check_events
             for event in pygame.event.get():
                 self._check_events_all_loops(event)
                 self.current_loop.check_events(event)

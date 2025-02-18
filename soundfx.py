@@ -14,6 +14,7 @@ class SoundFX:
         self.sounds['levelup'] = pygame.mixer.Sound("assets/sounds/levelup.mp3")
         self.sounds['fail'] = pygame.mixer.Sound("assets/sounds/fail.mp3")
         self.sounds['gameover'] = pygame.mixer.Sound("assets/sounds/gameover.mp3")
+        self.sounds['highscore'] = pygame.mixer.Sound("assets/sounds/highscore.mp3")
         
         # Load music
         self.musics = dict()

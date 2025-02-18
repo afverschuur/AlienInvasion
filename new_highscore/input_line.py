@@ -1,14 +1,11 @@
 import pygame
 from pygame.font import Font
 
-class Line:
-    def __init__(self, text_input, length) -> None:
-        self.screen = text_input.screen
-        self.screen_rect = self.screen.get_rect()
-
-        self.font = pygame.font.Font("./font/SpaceMono-Regular.ttf", 32) 
-        self.text_color = (0, 0, 0)
-        self.bg_color = text_input.bg_color
+class InputLine:
+    def __init__(self, game_base, length) -> None:
+        self.game_base = game_base
+        self.font = pygame.font.Font(self.game_base.settings.font, 32) 
+        
         self.input = []
         self.charstring = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ '
         self.chars = list(self.charstring)
@@ -21,13 +18,13 @@ class Line:
 
     def _prep_img(self):
         self._update_selected()
-        self.image = self.font.render(''.join(self.input), True, self.text_color, self.bg_color)
+        self.image = self.font.render(''.join(self.input), True, self.game_base.settings.font_color, self.game_base.settings.bg_color)
         self.image_rect = self.image.get_rect()
-        self.image_rect.center = self.screen_rect.center
-        self.image_rect.top = 400
+        self.image_rect.center = self.game_base.screen_rect.center
 
-    def draw_line(self):
-        self.screen.blit(self.image, self.image_rect)
+    def draw(self, pos_y):
+        self.image_rect.top = pos_y
+        self.game_base.screen.blit(self.image, self.image_rect)
 
     def _update_selected(self):
         self.input[self.selected_place] = self.chars[self.selected_char % 27]
@@ -55,3 +52,8 @@ class Line:
                     self.input[self.selected_place] = '_'
         
         self._prep_img()
+
+    def get_input(self):
+        joined_input = ''.join(self.input)
+        cleaned_input = joined_input.rstrip('_ ')
+        return cleaned_input

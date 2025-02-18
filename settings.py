@@ -31,6 +31,7 @@ class Settings:
         # Set fonts
         self.font = "assets/fonts/SpaceMono-Regular.ttf"
         self.font_title = "assets/fonts/Monofett-Regular.ttf"
+        self.font_color = (30, 30, 30)
 
         self.init_dynamic_settings()
 

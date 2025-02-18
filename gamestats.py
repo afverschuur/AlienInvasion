@@ -6,7 +6,7 @@ class GameStats:
     def __init__(self, ai_game):
         """ Init """
         self.settings = ai_game.settings
-        self.highscores = self.load_highscores()
+        self.highscores = self._load_highscores()
         self.reset_stats()
     
     def reset_stats(self):
@@ -15,36 +15,40 @@ class GameStats:
         self.score = 0
         self.level = 1
 
-    def check_highscore(self):
-        top3 = self.highscores.copy()
+    def is_highscore(self):
         new = False
         for place, (name, highscore) in enumerate(self.highscores):
-            name = "New"
             if self.score > highscore:
-                top3.insert(place, (name, self.score))
                 new = True
                 break
-        self.highscores = top3[:3]
-        if new:
-            self.save_highscores(self.highscores)
         return new
-
-    def load_highscores(self):
+    
+    def insert_and_save_highscore(self, new_name):
+        top3 = self.highscores.copy()
+        for place, (x, highscore) in enumerate(self.highscores):
+            if self.score > highscore:
+                top3.insert(place, [new_name, self.score])
+                self.highscore = self.score
+                break
+        self.highscores = top3[:3]
+        self._save_highscores()
+    
+    def _load_highscores(self):
         highscores = []
         file = "highscores.json"
         try:
             with open(file) as f:
                 highscores = json.load(f)
         except:
-            highscores = [("Noname", 0), ("Noname", 0), ("Noname", 0)]
+            highscores = [("No name", 0), ("No name", 0), ("No name", 0)]
 
         return highscores
     
-    def save_highscores(self, highscores):
+    def _save_highscores(self):
         file = "highscores.json"
         try:
             with open(file) as f:
-                json.dump(highscores, f)
+                json.dump(self.highscores, f)
         except:
             with open(file, 'w') as f:
-                json.dump(highscores, f)
+                json.dump(self.highscores, f)

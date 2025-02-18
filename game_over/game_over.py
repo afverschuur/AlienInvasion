@@ -1,4 +1,4 @@
-from classes.game_status_interface import GameLoopInterface
+from classes.game_loop_interface import GameLoopInterface
 from game_over.game_over_text import GameOverText
 import pygame
 from game_assets.ship import Ship 
@@ -33,7 +33,7 @@ class GameOver(GameLoopInterface):
 
     def update_assets(self) -> None:
         """ Update assets """
-        pass
+        self.textscreen.update()
 
     ######################################
     # UPDATE SCREEN
