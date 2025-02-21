@@ -38,9 +38,9 @@ class Scoreboard:
         level_str = f"Level: {self.game_base.stats.level}"
         self.level_img = self.font.render(level_str, True, self.text_color, self.game_base.settings.bg_color)
 
-        # Display level below score
+        # Display level 
         self.level_rect = self.level_img.get_rect()
-        self.level_rect.right = self.game_base.screen_rect.right - self.level_rect.width - 10
+        self.level_rect.right = self.game_base.screen_rect.right - 20
         self.level_rect.top = self.topmargin
 
     def _prep_ships(self):

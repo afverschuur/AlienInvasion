@@ -24,10 +24,6 @@ class Ship(Sprite):
         # Flags
         self.moving_right = False
         self.moving_left = False
-        self.exploding = False
-
-        # Reset frames exploding
-        self.exploding_frames = 0
         
     def update(self):
         """ Update position based on movement flags, handle explosion """
@@ -41,12 +37,6 @@ class Ship(Sprite):
         # Update ship's rect from self.x
         self.rect.x = self.x
 
-        # Exploding
-        if self.exploding:
-            self.exploding_frames += 1
-            if self.exploding_frames == 50:
-                self.new_ship()
-
     def blitme(self):
         """ Draw ship at current position """
         self.game_base.screen.blit(self.image, self.rect)
@@ -56,10 +46,4 @@ class Ship(Sprite):
         self.rect.midbottom = self.game_base.screen_rect.midbottom
         self.x = float(self.rect.x)
 
-    def explode(self):
-        """ Explode ship """
-        # Change imgae
-        self.image = pygame.image.load('assets/images/ship_exploded.png').convert_alpha()
-        # Set flag
-        self.exploding = True
 

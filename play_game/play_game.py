@@ -203,9 +203,6 @@ class PlayGame(GameLoopInterface):
     
     def _ship_hit(self):
         """ Handle hitting ship """
-        # Explode ship
-        self.ship.explode()
-
         # Play sound
         self.game_base.soundfx.sound('fail')
 
